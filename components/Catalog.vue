@@ -81,6 +81,7 @@
                 //this.goUp();
                 this.currentSectionId = 0;
             });
+
             this.$axios.get('/local/templates/zkabel_mobile/catalog.php').then(response => {
                     if (response.data !== undefined) {
                         //  console.log(response.data);

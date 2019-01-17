@@ -24,11 +24,7 @@
                 formData.append('pass', this.password);
                 formData.append('ACTION', 'login');
 
-                this.$axios.post('/ajax/global_listener.php', formData, {
-                    headers: {
-                        'x-requested-with': 'XMLHttpRequest'
-                    }
-                })
+                this.$axios.post('/ajax/global_listener.php', formData)
                     .then(resp => {
                         if (resp.status == '200' && resp.data != "") {
 

@@ -73,7 +73,7 @@
         methods: {
             send() {
                 let formData = new FormData(document.forms.register);
-                this.$axios.post('/registration/', formData, {headers:{'x-requested-with': 'XMLHttpRequest'}})
+                this.$axios.post('/registration/', formData)
                     .then(response => {
                         if (response.status == '200' && response.data != "") {
                             this.$emit('update')
