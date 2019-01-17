@@ -1,0 +1,126 @@
+<template>
+    <v-layout v-if="show"
+              row wrap>
+        <v-flex xs12>
+            <v-card>
+                <v-card-title primary-title>
+                    <div>
+                        <h3 class="headline mb-0">Доставка</h3>
+                    </div>
+                </v-card-title>
+                <v-radio-group v-model="value" :rules="[active]" req>
+                    <v-container fluid
+                                 grid-list-lg>
+                        <v-layout row wrap>
+                            <template v-for="item in items">
+
+
+                                <v-flex xs12 md6>
+                                    <v-card @click="value=item.id">
+                                        <v-card-title>
+                                            <div class="delivery">
+                                                <v-radio
+                                                        :key="'delivery'+item.id"
+                                                        :value="item.id"
+                                                        :label="item.name"
+                                                ></v-radio>
+
+
+                                                <div class="small">{{item.description}}</div>
+                                                <br>
+                                                <div class="price">{{item.price}}</div>
+                                                <div class="period" v-if="item.period">{{item.period}}</div>
+                                            </div>
+                                        </v-card-title>
+                                    </v-card>
+                                </v-flex>
+                            </template>
+                        </v-layout>
+
+                    </v-container>
+                </v-radio-group>
+
+            </v-card>
+        </v-flex>
+    </v-layout>
+</template>
+
+<script>
+    export default {
+        name: "Delivery",
+        props: ['personType'],
+        data: function () {
+            return {
+                location: false,
+                items: [],
+                value: '',
+            }
+        },
+        computed: {
+            active() {
+                return () => {
+                    if (this.value > 0) {
+                        return true
+                    } else {
+                        return 'Выберите способ доставки'
+                    }
+
+                }
+            },
+            show() {
+                return this.location && this.items;
+            }
+        },
+        watch: {
+            value(val) {
+                this.$emit('update', val);
+            }
+        },
+        methods: {
+            update() {
+                this.items = [];
+                this.$axios.post('/api/order/getDelivery/', {
+                    LOCATION: this.location,
+                    personType: this.personType
+                })
+                    .then(response => {
+                        if (response.status == '200' && response.data != "") {
+                            this.items = response.data.result;
+                        }
+                    })
+            }
+        },
+        created() {
+            this.bus.$on('changeLocation', data => {
+                this.location = data;
+                this.update();
+            });
+        },
+        mounted() {
+            this.update();
+        }
+    }
+</script>
+
+<style scoped>
+    .delivery {
+        margin-bottom: 30px;
+    }
+
+    .price, .period {
+        position: absolute;
+        bottom: 0;
+        background: #e3e3e3;
+        border-radius: 3px;
+        padding: 3px 10px;
+    }
+
+    .price {
+        right: 0;
+    }
+
+    .period {
+        left: 0;
+    }
+
+</style>
