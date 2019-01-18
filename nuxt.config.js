@@ -36,7 +36,6 @@ module.exports = {
   */
   plugins: [
     '@/plugins/vuetify',
-    '@/plugins/axios'
   ],
 
   /*
@@ -44,14 +43,11 @@ module.exports = {
   */
   modules: [
     // Doc: https://github.com/nuxt-community/axios-module#usage
-    '@nuxtjs/axios'
   ],
   /*
   ** Axios module configuration
   */
-  axios: {
 
-  },
 
   /*
   ** Build configuration
@@ -60,7 +56,7 @@ module.exports = {
     /*
     ** You can extend webpack config here
     */
-    extend(config, ctx) {
+   extend(config, ctx) {
 
     }
   }

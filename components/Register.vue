@@ -73,12 +73,12 @@
         methods: {
             send() {
                 let formData = new FormData(document.forms.register);
-                this.$axios.post('/registration/', formData)
+               /** this.$axios.post('/registration/', formData)
                     .then(response => {
                         if (response.status == '200' && response.data != "") {
                             this.$emit('update')
                         }
-                    })
+                    })*//
 
             },
             curRules(code) {

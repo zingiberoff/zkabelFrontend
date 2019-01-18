@@ -53,7 +53,8 @@
                 formData.append('BUILDING', v);
                 formData.append('ACTION', 'searchBuilding');
                 this.loading = true;
-                this.$axios.post('/ajax/global_listener.php', formData, {
+
+             /**   this.$axios.post('/ajax/global_listener.php', formData, {
                     headers: {
                         'x-requested-with': 'XMLHttpRequest'
                     },
@@ -63,7 +64,7 @@
                         console.log(this.items);
                         this.loading = false;
                     }
-                });
+                });*//
 
             }
         },

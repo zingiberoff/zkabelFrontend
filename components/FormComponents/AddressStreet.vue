@@ -53,7 +53,7 @@
                 formData.append('ACTION', 'searchStreet');
                 formData.append('STREET', v);
                 this.loading = true;
-                this.$axios.post('/ajax/global_listener.php', formData, {
+            /**   this.$axios.post('/ajax/global_listener.php', formData, {
                     headers: {
                         'x-requested-with': 'XMLHttpRequest'
                     },
@@ -62,7 +62,7 @@
                         this.items = response.data.ITEMS;
                         this.loading = false;
                     }
-                });
+                });*/
             }
 
 

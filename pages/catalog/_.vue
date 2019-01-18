@@ -1,10 +1,17 @@
 <template>
- <span>{{$route.params.pathMatch}}</span>
+  <div>
+  <catalog :slug="$route.params.pathMatch"/>
+
+  </div>
 </template>
 
 <script>
+
+    import Catalog from '~/components/Catalog';
     export default {
-        name: "_"
+      name: "_",
+      components: {Catalog},
+
     }
 </script>
 

@@ -23,6 +23,8 @@
                 formData.append('login', this.login);
                 formData.append('pass', this.password);
                 formData.append('ACTION', 'login');
+              /** todo: To Store
+               *
 
                 this.$axios.post('/ajax/global_listener.php', formData)
                     .then(resp => {
@@ -39,7 +41,7 @@
                     .catch(err => {
                         localStorage.removeItem('user-token'); // if the request fails, remove any possible user token if possible
                     })
-            }
+            }*/
         }
     }
 </script>

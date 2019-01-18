@@ -72,7 +72,7 @@
                 let props = this.orderProperties;
                 props.payment_id = this.payment;
                 props.delivery_id = this.delivery;
-                this.$axios.post('/api/order/saveOrder/', props)
+               /** this.$axios.post('/api/order/saveOrder/', props)
                     .then(response => {
                         if (response.status == '200' && response.data != "") {
                             if (response.data.result > 0) {
@@ -81,7 +81,7 @@
                             }
                             console.log(response.data.result);
                         }
-                    })
+                    })*//
 
             },
             setType(type) {
