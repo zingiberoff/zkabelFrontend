@@ -21,7 +21,7 @@
         8(800)200-72-36 </a>
       <div class="icons">
         <a href="/personal/cart/" class="icons__icon">
-          <v-badge class="custom" >
+          <v-badge class="custom">
                         <span slot="badge" v-if="cartCountItems">
                           {{cartCountItems}}
                         </span>
@@ -39,7 +39,7 @@
 
     <v-content>
       <v-container>
-        <nuxt/>
+          <nuxt/>
       </v-container>
     </v-content>
 
@@ -52,7 +52,15 @@
       <v-btn
         color="accent"
         flat
-        value="catalog"
+        value="/"
+      >
+        <span>Домой</span>
+        <v-icon>home</v-icon>
+      </v-btn>
+      <v-btn
+        color="accent"
+        flat
+        value="/catalog/"
       >
         <span>Каталог</span>
         <v-icon>list</v-icon>
@@ -60,7 +68,7 @@
       <v-btn
         color="accent"
         flat
-        value="contacts"
+        value="/contacts/"
       >
         <span>Контакты</span>
         <v-icon>phone_in_talk</v-icon>
@@ -69,7 +77,7 @@
       <v-btn
         color="accent"
         flat
-        value="info"
+        value="/info/"
       >
         <span>Инфо</span>
         <v-icon>drag_indicator</v-icon>
@@ -96,12 +104,17 @@
         cart: {},
         individualPrice: false,
         menuOpen: false,
-        bottomNav: 'catalog'
+        bottomNav: '/'
+      }
+    },
+    watch: {
+      bottomNav(val) {
+        this.$router.push(val);
       }
     },
     computed: {
       catalogActive: function () {
-        return this.bottomNav=='catalog';
+        return this.bottomNav == 'catalog';
       },
       cartCountItems: function () {
         let i = 0;
@@ -164,15 +177,16 @@
         this.menuOpen = true;
       },
       refreshCart: function () {
-        const formData = new FormData();
-        formData.append('ACTION', 'getBasketItems');
-        this.$axios.post('https://www.zkabel.ru/ajax/global_listener.php', formData,
-          {
-            headers: {
-              'x-requested-with': 'XMLHttpRequest'
-            }
-          })
-          .then(response => {
+        /**todo:to store
+         /* const formData = new FormData();ca
+         formData.append('ACTION', 'getBasketItems');
+         this.$axios.post('https://www.zkabel.ru/ajax/global_listener.php', formData,
+         {
+           headers: {
+             'x-requested-with': 'XMLHttpRequest'
+           }
+         })
+         .then(response => {
             this.cart = {};
             if (response.status == '200' && response.data != "") {
               for (let item in response.data.ITEMS) {
@@ -180,9 +194,9 @@
               }
             }
           })
-          .catch(e => {
+         .catch(e => {
             console.log(e);
-          })
+          })*/
       },
       inCart: function (id) {
         if (this.cart[id] !== undefined && this.cart[id].QUANTITY != undefined) {
@@ -193,11 +207,8 @@
 
     },
     created: function () {
-      this.bus.$on('orderSuccess', (id) => {
-        console.log(id);
-        this.refreshCart();
-      });
-      this.refreshCart();
-    },
+      this.$store.dispatch('loadCatalog');
+      this.$store.dispatch('loadSlugMap');
+    }
   }
 </script>

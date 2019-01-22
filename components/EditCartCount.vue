@@ -7,10 +7,8 @@
 </template>
 
 <script>
-    import mixins from '../mixins.js'
     export default {
         name: "EditCartCount",
-        mixins: [mixins.basketAjax],
         props: {
             product_id: Number,
             countInCart: Number,
@@ -25,7 +23,7 @@
         watch: {
             count: function (a, b) {
                 console.log(a - b);
-                this.addToCart(a - b);
+              $store.dispatch('addToCart',{id: this.product_id, count: a - b});
             }
         }
         ,

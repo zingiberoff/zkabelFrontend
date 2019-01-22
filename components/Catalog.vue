@@ -4,21 +4,25 @@
             row
             v-touch="{right: () => goUp()}">
     <v-flex xs12>
-{{slug}}
       <v-list subheader>
         <v-subheader v-if="currentSection.NAME">{{currentSection.NAME}}</v-subheader>
-        <transition-group name="list">
-          <v-list-tile v-for="item in currentSection.SECTIONS"
-                       :key="item.ID"
-                       @click="clickToitem(item.ID)">
+{{currentPageType}},{{currentSectionId}}
+        <nuxt-link :to="item.URL"
+                   v-for="item in currentSection.SECTIONS"
+                   :key="item.ID"
+        >
+          <v-list-tile>
+
             <v-list-tile-avatar>
-              <img :src="item.IMAGE">
+              <!--<img :src="item.IMAGE">-->
             </v-list-tile-avatar>
             <v-list-tile-content>
               <v-list-tile-title>{{ item.NAME }}</v-list-tile-title>
             </v-list-tile-content>
+
           </v-list-tile>
-        </transition-group>
+        </nuxt-link>
+
       </v-list>
     </v-flex>
   </v-layout>
@@ -27,67 +31,62 @@
 </template>
 
 <script>
-  import store from "../store";
 
   export default {
     name: "Catalog",
-    props:['slug'],
+    props: ['slug'],
     data: function () {
       return {
         items: {},
-        currentSectionId: null,
-        currentSection: {},
       }
+    },
+    computed: {
+      currentPageType() {
+        if (this.$store.state.slugMap['/catalog/' + this.slug] !== undefined) {
+          return this.$store.state.slugMap['/catalog/' + this.slug].type
+        }else{
+          return 'productDetail';
+        }
+      },
+      currentSectionId() {
+        if (this.$store.state.slugMap['/catalog/' + this.slug] !== undefined) {
+          return this.$store.state.slugMap['/catalog/' + this.slug].id
+        }
+        //return 0;
+      },
+      currentSection() {
+        if (this.$store.state.catalogTree[this.currentSectionId] !== undefined) {
+          return this.$store.state.catalogTree[this.currentSectionId];
+        } else {
+          return {};
+        }
+      },
+      countSections() {
+        if (this.currentSection.SECTIONS === undefined) {
+          return 0;
+        }
+        let i = 0;
+        for (let section in this.currentSection.SECTIONS) {
+          i++;
+        }
+        return i;
+      }
+
     },
     watch: {
-      currentSectionId(n, o) {
-        if (n !== undefined) { //выход из меню
-          this.currentSection = this.getSubSections(n);
-        } else {
-          this.$emit('close')
+      currentSectionId(id) {
+        if (this.countSections == 0) {
+          this.$store.dispatch('loadProducts', id);
         }
       }
     },
+
     methods: {
-      clickToitem(id) {
-        if (this.items[id].SECTIONS.length !== 0) {
-          this.currentSectionId = id;
-        } else {
-          window.location = this.items[id].URL;
-        }
-      },
       goUp() {
-        if (this.items[this.currentSectionId].PARENT === undefined) {
-          this.$emit('close')
-        } else {
-          this.currentSectionId = this.items[this.currentSectionId].PARENT;
-        }
-      },
-      getSubSections(id) {
-
-        if (!id) {
-          id = 0;
-        }
-        if (this.items[id] !== undefined && this.items[id].SECTIONS !== undefined) {
-
-          return this.items[id];
-        }
-
+        this.$router.back();
       }
-
-    },
-    activated() {
-      console.log(123);
     },
     created() {
-      this.bus.$on('catalogBackClick', () => {
-        //this.goUp();
-        this.currentSectionId = 0;
-      });
-      this.items = this.$store.catalogTree;
-      if(!this.items){
-        this.$store.dispatch('loadCatalog')
-      }
 
     }
   }

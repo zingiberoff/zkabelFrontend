@@ -1,9 +1,8 @@
 <template>
-    <div class="b-add-basket" @click="addToCart(moq)"></div>
+    <div class="b-add-basket" @click="$store.dispatch('addToCart',{id:product_id,count:moq})"></div>
 </template>
 
 <script>
-    import mixins from '../mixins.js'
     export default {
         name: "AddToCart",
         props: ['product_id', 'moq'],
@@ -13,7 +12,6 @@
                 errors: []
             }
         },
-        mixins: [mixins.basketAjax]
     }
 </script>
 

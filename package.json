@@ -17,6 +17,7 @@
     "express": "^4.16.3",
     "form-data": "^2.3.3",
     "nuxt": "^2.0.0",
+    "request": "^2.88.0",
     "vuetify": "^1.4.2"
   },
   "devDependencies": {
