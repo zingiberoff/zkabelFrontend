@@ -7,7 +7,7 @@ const eventBus = new Vue();
 Vue.use(Vuetify, {
   theme: {
     primary: '#121212', // a color that is not in the material colors palette
-    accent: colors.grey.darken3,
+    accent: colors.lightGreen,
     secondary: colors.amber.darken3,
     info: colors.teal.lighten1,
     warning: colors.amber.base,
@@ -15,5 +15,3 @@ Vue.use(Vuetify, {
     success: colors.green.accent3
   }
 });
-
-Vue.prototype.bus = eventBus;

@@ -73,13 +73,7 @@
       }
 
     },
-    watch: {
-      currentSectionId(id) {
-        if (this.countSections == 0) {
-          this.$store.dispatch('loadProducts', id);
-        }
-      }
-    },
+
 
     methods: {
       goUp() {

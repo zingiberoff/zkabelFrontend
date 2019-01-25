@@ -64,7 +64,7 @@
                         console.log(this.items);
                         this.loading = false;
                     }
-                });*//
+                });*/
 
             }
         },

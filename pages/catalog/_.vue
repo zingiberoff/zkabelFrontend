@@ -1,69 +1,82 @@
 <template>
+  <div class="katalog"
+       row
+       v-touch="{right: () => goUp()}">
 
-  <v-layout class="katalog"
-            row
-            v-touch="{right: () => goUp()}">
-<category
-  :key="'cat_'+currentSectionId"
-  :id="currentSectionId"
-  :type="currentPageType"
->
-
-
-</category>
-
-  </v-layout>
-
+    <category v-if="isCat"
+              :key="'cat_'+entity.id"
+              :id="entity.id"
+              :type="entity.type"/>
+    <product v-if="isProduct"
+             :key="'product_'+entity.id"
+             :id="entity.id"
+    ></product>
+  </div>
 </template>
 
 <script>
   import Category from '../../components/Category.vue'
+  import Product from '../../components/Product.vue'
+
   export default {
     name: "catalog",
-    components:{Category},
-    key: "catalog",
+    components: {Category, Product},
     data: function () {
       return {
+        entity: {}
       }
     },
-    computed: {
-      currentPageType(){
-        if (this.$store.state.slugMap['/catalog/' + this.$route.params.pathMatch] !== undefined) {
-          return this.$store.state.slugMap['/catalog/' + this.$route.params.pathMatch].type
-        } else {
-          return 'productDetail';
-        }
-      },
-      currentSectionId() {
-        if (this.$store.state.slugMap['/catalog/' + this.$route.params.pathMatch] !== undefined) {
-          return this.$store.state.slugMap['/catalog/' + this.$route.params.pathMatch].id
-        }
-        //return 0;
-      }
-
-    },
-    watch: {
-      currentSectionId(id) {
-        if (this.currentPageType == 'productList') {
-          this.$store.dispatch('loadProductslist', id);
-        }
-      }
-    },
-
     methods: {
       goUp() {
         this.$router.back();
       }
     },
-    created() {
+    computed: {
+      isCat() {
+        if (this.entity === undefined) {
+          return false;
+        }
+        if (this.entity.type === undefined) {
+          return false;
+        }
+        return true
+      },
+      isProduct() {
+        if (this.isCat) {
+          return false;
+        }
+        if (this.entity === undefined) {
+          return false;
+        }
+        if (this.entity.id === undefined) {
+          return false;
+        }
+        return true;
+      }
+    },
 
-    }
+    created() {
+      this.entity = this.$store.getters.catFromSlug(this.$route.path);
+
+      if (this.entity === undefined) {
+        this.entity = this.$store.getters.productFromSlug(this.$route.path);
+      }
+      if (this.entity === undefined) {
+        this.entity = "404"
+      }
+    },
+
+    fetch({store, params}) {
+      return store.dispatch('loadCatalogAll','/catalog/'+params.pathMatch);
+    },
+
   }
 </script>
 
 <style scoped>
-
-
+  .katalog{
+    padding-bottom: 40px;
+  }
   .sub_cat {
     min-height: 100vh;
     display: none;

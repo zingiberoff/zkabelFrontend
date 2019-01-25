@@ -40,8 +40,8 @@
                     })
                     .catch(err => {
                         localStorage.removeItem('user-token'); // if the request fails, remove any possible user token if possible
-                    })
-            }*/
+                    })*/
+            }
         }
     }
 </script>
