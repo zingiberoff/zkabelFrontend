@@ -28,7 +28,8 @@
     },
     methods: {
       goUp() {
-        this.$router.back();
+        this.$router.push(this.$store.getters.parentSections(this.entity.parent).url)
+
       }
     },
     computed: {

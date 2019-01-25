@@ -7,7 +7,7 @@ let $axios = axios.create(
   {
     requestCert: false,
     rejectUnauthorized: false,
-    baseURL: 'https://api.m.zkabel.ru',
+    baseURL: 'https://www.zkabel.ru',
     withCredentials: true,
   }
 );
@@ -21,7 +21,7 @@ const store = () => new Vuex.Store({
     catalogTree: [],
     products: [],
     cart: [],
-    currentCatalogPage: '',
+    currentCatalogPage: '/catalog/',
     orderProperties: {
       userTypes: [],
       userProfiles: [],
@@ -59,6 +59,7 @@ const store = () => new Vuex.Store({
       }
     },
     saveCart: (state, cartItems) => {
+      console.log(cartItems);
       for (let id in cartItems) {
         if (state.cart.find(cartItem => {
           return cartItem.PRODUCT_ID == id
@@ -92,6 +93,14 @@ const store = () => new Vuex.Store({
     },
     childSections: state => id => {
       return state.catalogTree.filter(section => section.parent === id);
+    },
+    parentSections: state => id => {
+
+      let current = state.catalogTree.find(section => section.id === id);
+      console.log(id);
+     let parent =  state.catalogTree.find(section => section.id == current.parent);
+      console.log(current.id,current.name,current.parent,parent.id);
+     return parent
     },
     section: state => id => {
       return state.catalogTree.find(section => section.id === id);
@@ -233,7 +242,6 @@ const store = () => new Vuex.Store({
     },
     addToCart(store, params) {
       $axios.post('/api/basket/addToBasket/', params).then(response => {
-          store.commit('saveCart', response.data.result)
           store.dispatch('loadCart')
         }
       ).catch(e => {

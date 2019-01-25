@@ -20,11 +20,9 @@
     data: () => ({}),
     methods: {
       start() {
-        console.log(1);
         this.loading = this.$store.commit('loading', true)
       },
       finish() {
-        console.log(0);
         this.loading = this.$store.commit('loading', false)
       }
     },
@@ -42,7 +40,8 @@
 
 <style scoped>
   .fade-enter-active, .fade-leave-active {
-    transition: opacity .5s cubic-bezier(0.6,-0.44, 0.53, 0.99)
+    transition: opacity .5s cubic-bezier(0.6,-0.44, 0.53, 0.99);
+    transition-duration: .5s;
   }
 
   .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */

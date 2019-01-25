@@ -48,22 +48,13 @@
       :active.sync="bottomNav"
       :value="true"
       fixed
-      shift
       color="#f5f5f5"
     >
+
       <v-btn
         color="error"
         flat
-        value="/"
-        class="pa-1"
-      >
-        <span>Домой</span>
-        <v-icon>home</v-icon>
-      </v-btn>
-      <v-btn
-        color="error"
-        flat
-        value="/catalog/"
+        :value="$store.state.currentCatalogPage"
         class="pa-1"
       >
         <span>Каталог</span>
@@ -115,20 +106,21 @@
         cart: {},
         individualPrice: false,
         menuOpen: false,
-        bottomNav: '/'
-      }
-    },
-    watch: {
-      bottomNav(val) {
-        this.$router.push(val);
+
       }
     },
     computed: {
-      catalogActive: function () {
-        return this.bottomNav == 'catalog';
+      bottomNav: {
+        set (val){
+          this.$router.push(val);
+        },
+        get(){
+          return this.$route.path;
+        }
+
       },
       cartCountItems: function () {
-        return 2;
+        return this.$store.getters.cartCountItems;
       }
     },
 

@@ -8,6 +8,7 @@
     computed:{
     },
     created() {
+      this.$store.dispatch('loadSession');
         this.$store.dispatch('loadCart');
     }
   }
