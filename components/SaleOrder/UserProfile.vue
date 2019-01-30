@@ -25,11 +25,8 @@
     },
     watch: {
       profile: function (val) {
-        this.$emit('change', val)
+        this.$store.commit('setProfile',val)
       },
-      personType: function () {
-        this.$store.dispatch('getProfiles', this.personType);
-      }
     },
     methods: {},
     created() {

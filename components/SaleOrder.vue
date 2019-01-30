@@ -4,26 +4,12 @@
   <v-container grid-list-lg v-else-if="$store.getters.cartSumm">
     <v-form v-model="formValid">
       <user-type/>
-
-      <user-profile v-if="personType" :key="personType"/>
-
-
-      <!--<order-properties v-if="profileType"-->
-      <!--:personType="profileType"-->
-      <!--:profileID="profileID"-->
-      <!--:key="profileID">-->
-
-      <!--</order-properties>-->
-
-      <!--<delivery :personType="profileType" @update="updateDelivery">-->
-
-      <!--</delivery>-->
-      <!--<payment :personType="profileType" @update="updatePayment">-->
-
-      <!--</payment>-->
+      <user-profile v-if="personType" :key="'profile_'+personType"/>
+      <order-properties v-if="profileID" :key="'properties_'+profileID"/>
+      <delivery v-if="personType" :key="'delivery_'+personType"/>
+      <payment v-if="personType" :key="'payments'+personType"/>
+      <v-btn color="success" v-if="formValid&&profileID&&delivery&&payment" @click="saveOrder">Оформить заказ</v-btn>
     </v-form>
-    <v-btn color="success" v-if="formValid&&profileID&&delivery&&payment" @click="saveOrder">Оформить заказ</v-btn>
-
   </v-container>
 
 
@@ -50,10 +36,6 @@
       return {
         formValid: false,
         profileType: "",
-        profileID: "",
-        orderProperties: {},
-        payment: '',
-        delivery: '',
         orderId: null
 
       };
@@ -61,40 +43,31 @@
     computed: {
       personType() {
         return this.$store.state.order.userType;
+      },
+      orderProperties() {
+        return this.$store.state.order.properties;
+      },
+      profileID() {
+        return this.$store.state.order.userProfile;
+      },
+      payment() {
+        return this.$store.state.order.payment_id;
+      },
+      delivery() {
+        return this.$store.state.order.delivery_id;
       }
     },
     methods: {
-      updatePayment(val) {
-        this.payment = val
-      },
-      updateDelivery(val) {
-        this.delivery = val
-      },
       saveOrder() {
         let props = this.orderProperties;
         props.payment_id = this.payment;
         props.delivery_id = this.delivery;
-        /** this.$axios.post('/api/order/saveOrder/', props)
-         .then(response => {
-                        if (response.status == '200' && response.data != "") {
-                            if (response.data.result > 0) {
-                                this.orderId = response.data.result;
-                                this.bus.$emit('orderSuccess', this.orderId);
-                            }
-                            console.log(response.data.result);
-                        }
-                    })*/
-
-      },
-      setType(type) {
-        this.profileType = type
-      },
-      setProfile(type) {
-        this.profileID = type;
+        this.$store.dispatch('saveOrder', props).then(orderId => {
+          this.orderId = orderId
+        }).catch(e => {
+          console.log(e)
+        });
       }
-    },
-    created() {
-
     }
   }
 </script>
