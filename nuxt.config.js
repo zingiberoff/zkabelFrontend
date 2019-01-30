@@ -36,14 +36,13 @@ module.exports = {
   */
   plugins: [
     '@/plugins/vuetify',
+    '@/plugins/ymaps',
   ],
 
   /*
   ** Nuxt.js modules
   */
-  modules: [
-    // Doc: https://github.com/nuxt-community/axios-module#usage
-  ],
+  modules: [/*'vue-yandex-maps/nuxt', {}*/],
   /*
   ** Axios module configuration
   */
