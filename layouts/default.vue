@@ -4,12 +4,12 @@
       <!--          <menu-button @click="clickTopButton" :state="menuButtonState"></menu-button>-->
 
       <div class="header__logo">
-        <a href="/" data-transition="slidedown"><img
-          src="/local/templates/zkabel_mobile/assets/images/logos.svg"
+        <nuxt-link to="/catalog/" data-transition="slidedown"><img
+          src="/logos.svg"
           alt=""
           height="20">
 
-        </a>
+        </nuxt-link>
         <div>Кабельная арматура</div>
       </div>
 
@@ -20,7 +20,7 @@
         </v-icon>
         8(800)200-72-36 </a>
       <div class="icons">
-        <a href="/cart/" class="icons__icon">
+        <nuxt-link to="/cart/" class="icons__icon">
           <v-badge class="custom">
                         <span slot="badge" v-if="cartCountItems">
                           {{cartCountItems}}
@@ -32,12 +32,13 @@
               shopping_cart
             </v-icon>
           </v-badge>
-        </a>
+        </nuxt-link>
       </div>
     </header>
 
     <v-content class="custom">
-      <v-container>
+      <v-container fluid
+                   grid-list-md>
         <nuxt/>
       </v-container>
     </v-content>
@@ -111,11 +112,20 @@
     },
     computed: {
       bottomNav: {
-        set (val){
+        set(val) {
+          console.log(val);
           this.$router.push(val);
         },
-        get(){
-          return this.$route.path;
+        get() {
+          let routerPath = this.$route.path;
+          if (routerPath === '/') {
+            return '/catalog/';
+          }
+          if (['/contacts/', '/info/', '/profile/', this.$store.state.currentCatalogPage].indexOf(routerPath) !== -1) {
+            return this.$route.path;
+          }
+
+          return '/profile/';
         }
 
       },
