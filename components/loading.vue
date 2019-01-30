@@ -5,7 +5,7 @@
 
         <g>
           <title>Layer 1</title>
-          <path class="path" id="path1" fill="none" stroke="#dd2c00" stroke-width="40" d=" M 0 20 H 200 L 0 180 h 200"
+          <path class="path" id="path1" fill="none" stroke="#dd2c00" stroke-width="40" d=" M 0 15 H 200 L 0 185 h 200"
                 transform=""/>
 
         </g>
