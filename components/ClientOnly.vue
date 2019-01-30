@@ -5,11 +5,13 @@
 <script>
   export default {
     name: "ClientOnly",
-    computed:{
-    },
+    computed: {},
     created() {
+      this.$store.commit('loading', true);
       this.$store.dispatch('loadSession');
-        this.$store.dispatch('loadCart');
+      this.$store.dispatch('loadCart').then(() => {
+        this.$store.commit('loading', false)
+      }).catch(e=>{console.log(e)});
     }
   }
 </script>

@@ -6,7 +6,8 @@
       <v-layout row wrap>
         <basket-item v-for="item in basket" :item="item" @update="update()" :key="item.id"></basket-item>
       </v-layout>
-      <v-btn color="success" @click="$router.push('order')">Оформить заказ</v-btn>
+      <v-btn color="success" @click="$router.push('/order/')">Оформить заказ</v-btn>
+      <v-btn color="info"   @click="$router.push('/fast-order/')">Быстрый заказ</v-btn>
 
     </v-container>
 

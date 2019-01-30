@@ -1,49 +1,56 @@
 <template>
-    <div class="auth">
-        <input v-model="login" placeholder="Логин">
-        <input type="password" v-model="password" placeholder="Пароль">
-        <div class="btn" @click="Login()">Войти</div>
-        <a class="pa-2 mt-2" href="/registration">Регистрация</a>
-    </div>
+  <v-form v-model="formValid" name="register">
+    <v-container>
+      <v-layout row wrap>
+
+        <v-flex xs12>
+          <v-text-field
+            label="Логин"
+            v-model="login"
+            :rules="[value => !!value || 'Обязательное поле']"
+          ></v-text-field>
+        </v-flex>
+        <v-flex xs12>
+          <v-text-field
+            label="Пароль"
+            type="password"
+            :rules="[value => !!value || 'Обязательное поле']"
+            v-model="password"
+
+          ></v-text-field>
+        </v-flex>
+        <v-flex xs12>
+          <v-btn v-if="formValid"
+                 color="success"
+                 @click="Login"
+                 block>
+            Войти
+          </v-btn>
+        </v-flex>
+        <nuxt-link to="/registration/">Регистрация</nuxt-link>
+      </v-layout>
+    </v-container>
+
+  </v-form>
 </template>
 
 <script>
-    export default {
-        name: "Auth",
-        data: function () {
-            return {
-                login: '',
-                password: ''
-            }
-        },
-        methods: {
-            Login: function () {
-                if (!this.login || !this.password) return false;
-                const formData = new FormData();
-                formData.append('login', this.login);
-                formData.append('pass', this.password);
-                formData.append('ACTION', 'login');
-              /** todo: To Store
-               *
+  export default {
+    name: "Auth",
+    data: function () {
+      return {
+        formValid: false,
+        login: '',
+        password: ''
+      }
+    },
+    methods: {
+      Login: function () {
+        this.$store.dispatch('auth', {login: this.login, pass: this.password});
 
-                this.$axios.post('/ajax/global_listener.php', formData)
-                    .then(resp => {
-                        if (resp.status == '200' && resp.data != "") {
-
-                            if (resp.data.STATUS == true) {
-                                const token = resp.data.token;
-                                // console.log(token);
-                                localStorage.setItem('user-token', token); // store the token in localstorage
-                                window.location.reload();
-                            }
-                        }
-                    })
-                    .catch(err => {
-                        localStorage.removeItem('user-token'); // if the request fails, remove any possible user token if possible
-                    })*/
-            }
-        }
+      }
     }
+  }
 </script>
 
 <style scoped>
