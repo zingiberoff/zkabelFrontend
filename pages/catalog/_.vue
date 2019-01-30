@@ -28,7 +28,10 @@
     },
     methods: {
       goUp() {
-        this.$router.push(this.$store.getters.parentSections(this.entity.parent).url)
+        let parent = this.$store.getters.section(this.entity.parent);
+        if (parent !== undefined) {
+          this.$router.push(parent.url)
+        }
 
       }
     },
@@ -57,6 +60,7 @@
     },
 
     created() {
+
       this.entity = this.$store.getters.catFromSlug(this.$route.path);
 
       if (this.entity === undefined) {
@@ -68,16 +72,17 @@
     },
 
     fetch({store, params}) {
-      return store.dispatch('loadCatalogAll','/catalog/'+params.pathMatch);
+      return store.dispatch('loadCatalogAll', '/catalog/' + params.pathMatch);
     },
 
   }
 </script>
 
 <style scoped>
-  .katalog{
+  .katalog {
     padding-bottom: 40px;
   }
+
   .sub_cat {
     min-height: 100vh;
     display: none;

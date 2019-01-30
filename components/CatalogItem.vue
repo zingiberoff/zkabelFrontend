@@ -7,22 +7,22 @@
       <v-card class="item">
         <nuxt-link :to="product.url" class="item_name">
 
-          <div >
+          <div>
             {{product.name}}
           </div>
         </nuxt-link>
         <img :src="product.picture.src" alt="">
         <div class="article">
-          Артикул:{{product.article}}
+          артикул: {{product.article}}
         </div>
 
         <div v-if="price" class="item_price">
           {{price}}
         </div>
         <div v-if="price" class="item_buy">
-          <edit-cart-count v-if="$store.getters.inCart(product.id)"
+          <edit-cart-count v-if="inCart"
                            :product_id="product.id"
-                           :count-in-cart="$store.getters.inCart(product.id)"
+                           :count-in-cart="inCart"
                            @update="refreshCart()" v-bind:step="product.ratio"
           />
           <add-to-cart v-else
@@ -49,19 +49,10 @@
     components: {EditCartCount, AddToCart},
     computed: {
       price() {
-
-        if (this.$store.getters.cartSumm >= 5000) {
-          if (this.product.prices.WHOSALE !== null) {
-            return this.product.prices.WHOSALE.PRINT_VALUE
-          }
-        }
-        if (this.product.prices.RETAIL !== null) {
-          return this.product.prices.RETAIL.PRINT_VALUE
-        } else {
-
-        }
-        return false
-
+        return this.$store.getters.prices[this.product.id]
+      },
+      inCart() {
+        return this.$store.getters.inCart[this.product.id];
       }
     }
   }
@@ -71,9 +62,9 @@
   .item {
     padding: 10px 8px;
     display: grid;
-    grid-template-columns: 90px 1fr 1fr;
+    grid-template-columns: 90px 1fr 2fr 3fr;
     grid-template-rows: auto;
-    grid-template-areas: 'img name name' 'img article price' 'img avability buy';
+    grid-template-areas: 'img name name name' 'img article article price' 'avability avability buy buy';
     grid-column-gap: 5px;
     grid-row-gap: 5px;
     justify-items: stretch;
@@ -92,15 +83,17 @@
 
   .item > .item_price {
     grid-area: price;
+    justify-self: right;
     font-size: 18px;
   }
 
   .article {
     grid-area: article;
-    font-size: 18px;
+    font-size: 13px;
   }
 
   .item > .item_buy {
+    justify-self: right;
     grid-area: buy;
   }
 </style>

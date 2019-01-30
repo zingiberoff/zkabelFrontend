@@ -59,11 +59,12 @@
 <style scoped>
 
   .cart-counter {
+    margin: 6px 8px;
     position: relative;
     display: flex;
     width: 130px;
     border: 1px solid #d3d3d3;
-    padding: 7px 6px;
+    padding:  6px;
     justify-content: space-between;
   }
 

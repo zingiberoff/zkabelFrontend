@@ -4,7 +4,7 @@
       <v-card>
         <v-carousel
           hide-delimiters
-          height="300"
+          height="250"
         >
           <v-carousel-item
             contain
@@ -18,22 +18,31 @@
     <v-flex xs12>
       <v-card>
         <v-card-title>{{product.name}}</v-card-title>
-        <v-card-text>
-          <div v-if="price" class="item_price">
-            {{price}}
+        <v-card-text class="item_main">
+          <div class="avability">
+            В наличии
+            <div v-for="(item,index) in avability" :key="index">
+              <b>{{ item.NAME }}:</b> {{item.QUANTITY}}
+            </div>
           </div>
-          <div v-if="price" class="item_buy">
-            <edit-cart-count v-if="inCart"
-                             :product_id="product.id"
-                             :count-in-cart="inCart"
-                             @update="refreshCart()" v-bind:step="product.ratio"
-            />
-            <add-to-cart v-else
-                         :product_id="product.id"
-                         @update="refreshCart()"
-                         :moq="product.moq"
-            />
+          <div>
+            <div v-if="price" class="item_price">
+              {{price}}
+            </div>
+            <div v-if="price" class="item_buy">
+              <edit-cart-count v-if="inCart"
+                               :product_id="product.id"
+                               :count-in-cart="inCart"
+                               @update="refreshCart()" v-bind:step="product.ratio"
+              />
+              <add-to-cart v-else
+                           :product_id="product.id"
+                           @update="refreshCart()"
+                           :moq="product.moq"
+              />
+            </div>
           </div>
+
         </v-card-text>
 
       </v-card>
@@ -56,6 +65,13 @@
             </v-flex>
           </v-layout>
         </v-container>
+        <doc-icon
+          v-for="doc in docs" :key="doc.ID"
+          :name="doc.FORMATTED_ORIGINAL_NAME"
+          :size="doc.SIZE_FORMATTED"
+          :type="doc.EXTENSION"
+          :link="doc.SRC"
+        />
         <v-divider></v-divider>
         <v-card-title>Описание</v-card-title>
         <v-divider></v-divider>
@@ -71,11 +87,12 @@
 <script>
   import EditCartCount from './EditCartCount.vue'
   import AddToCart from './AddToCart.vue'
+  import DocIcon from './DocIcon.vue'
 
   export default {
     name: "Product",
     props: ['id'],
-    components: {EditCartCount, AddToCart},
+    components: {EditCartCount, AddToCart, DocIcon},
     computed: {
       product() {
         return this.$store.getters.product(this.id);
@@ -88,6 +105,12 @@
       },
       inCart() {
         return this.$store.getters.inCart[this.id];
+      },
+      docs() {
+        return this.product.detail.files;
+      },
+      avability() {
+        return this.product.detail.avability;
       }
     },
     created() {
@@ -103,5 +126,18 @@
 
   .align-end {
     align-items: flex-end !important;
+  }
+
+  .item_main {
+    display: flex;
+    justify-content: space-between;
+  }
+  .avability{
+    font-size: 12px;
+  }
+  .item_price{
+    text-align: right;
+    font-size: 20px;
+    font-weight: 600;
   }
 </style>
