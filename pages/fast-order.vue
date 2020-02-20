@@ -1,12 +1,14 @@
 <template>
-
+  <feedback></feedback>
 </template>
 
 <script>
-  import Category from '../../components/Category.vue'
-    export default {
-        name: "fast-order"
-    }
+  import Feedback from '@/components/Feedback.vue'
+
+  export default {
+    components: {Feedback},
+    name: "fast-order"
+  }
 </script>
 
 <style scoped>

@@ -8,11 +8,12 @@
             <h3 class="headline mb-0">Доставка</h3>
           </div>
         </v-card-title>
-        <v-radio-group v-model="value" :rules="[active]" req>
           <v-container fluid
-                       grid-list-lg>
-            <v-layout row wrap>
-              <template v-for="item in items">
+                       grid-list-sm>
+              <v-layout row wrap>
+                  <v-radio-group :rules="[active]" req v-model="value">
+
+                      <template v-for="item in items">
 
 
                 <v-flex xs12 md6>
@@ -35,10 +36,11 @@
                   </v-card>
                 </v-flex>
               </template>
-            </v-layout>
+                  </v-radio-group>
+              </v-layout>
 
           </v-container>
-        </v-radio-group>
+
 
       </v-card>
     </v-flex>
@@ -47,6 +49,7 @@
 
 <script>
   import axios from 'axios';
+
   export default {
     name: "Delivery",
     data: function () {
@@ -56,7 +59,7 @@
       }
     },
     computed: {
-      personType(){
+        personType() {
         return this.$store.state.order.userType;
       },
       location() {
@@ -80,7 +83,7 @@
         this.update();
       },
       value(val) {
-        return this.$store.commit('saveDelivery',val);
+          return this.$store.commit('saveDelivery', val);
       }
     },
     methods: {
@@ -89,15 +92,18 @@
         axios.post('https://www.zkabel.ru/api/order/getDelivery/', {
           LOCATION: this.location,
           personType: this.personType
-        })
+        },)
           .then(response => {
             if (response.status == '200' && response.data != "") {
               this.items = response.data.result;
             }
-          }).catch(e=>{console.log(e)})
+          }).catch(e => {
+            console.log(e)
+        })
       }
     },
     mounted() {
+        axios.defaults.headers['Authorization-Token'] = this.$store.state.user.userToken;
       this.update();
     }
   }

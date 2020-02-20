@@ -1,7 +1,7 @@
 <template>
   <category :key="'cat_0'"
             :id="0"
-            :type="sectionList"/>
+            type="sectionList"/>
 </template>
 
 <script>

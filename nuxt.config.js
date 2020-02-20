@@ -7,18 +7,24 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: pkg.name,
+    title: "Интернет магазин кабельной арматуры zkabel.ru",
     meta: [
-      { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: pkg.description }
+      {charset: 'utf-8'},
+      {name: 'viewport', content: 'width=device-width, initial-scale=1'},
+      {hid: 'description', name: 'description', content: pkg.description}
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' }
+      {rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'},
+      {rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons'}
     ]
   },
-
+  manifest: {
+    name: 'zkabel',
+    short_name: 'zkabel',
+    lang: 'ru',
+    description: 'Интернет магазин кабельной арматуры',
+    theme_color: '#ff5722',
+  },
   /*
   ** Customize the progress-bar color
   */
@@ -37,12 +43,26 @@ module.exports = {
   plugins: [
     '@/plugins/vuetify',
     '@/plugins/ymaps',
+    // {src: '@/plugins/localStorage.js', ssr: false}
+
   ],
 
   /*
   ** Nuxt.js modules
   */
-  modules: [/*'vue-yandex-maps/nuxt', {}*/],
+    modules: [/*"@nuxtjs/pwa", "@nuxtjs/component-cache"*/
+        [
+            '@nuxtjs/yandex-metrika',
+            {
+                id: '23160964',
+                webvisor: true,
+                clickmap: true,
+                useCDN: true,
+                trackLinks: true,
+                // accurateTrackBounce:true,
+            }
+        ],
+    ],
   /*
   ** Axios module configuration
   */
@@ -55,8 +75,23 @@ module.exports = {
     /*
     ** You can extend webpack config here
     */
-   extend(config, ctx) {
+    extend(config, ctx) {
+    },
 
-    }
-  }
+  },
+  /* render:
+     {
+       http2: {
+         push: true
+       }
+       ,
+       static: {
+         maxAge: "1y",
+         setHeaders(res, path) {
+           if (path.includes("sw.js")) {
+             res.setHeader("Cache-Control", `public, max-age=${15 * 60}`)
+           }
+         }
+       }
+     }*/
 }

@@ -11,7 +11,7 @@
 
   export default {
     name: "cart",
-    components: {BasketFull}
+    components: {BasketFull},
   }
 </script>
 

@@ -1,15 +1,23 @@
 <template>
-
-
-    <v-container grid-list-md v-if="cartEmpty"
-    >
-      <v-layout row wrap>
-        <basket-item v-for="item in basket" :item="item" @update="update()" :key="item.id"></basket-item>
-      </v-layout>
-      <v-btn color="success" @click="$router.push('/order/')">Оформить заказ</v-btn>
-      <v-btn color="info"   @click="$router.push('/fast-order/')">Быстрый заказ</v-btn>
-
-    </v-container>
+  <v-layout row wrap>
+    <basket-item v-for="item in basket" :item="item" @update="update()" :key="item.id"></basket-item>
+      <v-flex xs6>
+          <v-btn @click="$router.push('/order/');
+    reachGoal('m-oformit-zakaz-v-korzine')"
+                 block
+                 color="success"
+          >
+              Оформить заказ
+          </v-btn>
+      </v-flex>
+      <v-flex xs6>
+          <v-btn @click="$router.push('/fast-order/')"
+                 block
+                 color="info">Быстрый заказ
+          </v-btn>
+      </v-flex>
+      <v-divider></v-divider>
+  </v-layout>
 
 </template>
 
@@ -30,7 +38,7 @@
         return this.$store.state.cart
       },
       cartEmpty() {
-        return this.$store.state.cart
+        return this.$store.getters.cartSumm
       }
 
     },
@@ -41,5 +49,9 @@
 </script>
 
 <style scoped>
+    .v-divider {
+        margin-bottom: 80px;
+    }
+
 
 </style>

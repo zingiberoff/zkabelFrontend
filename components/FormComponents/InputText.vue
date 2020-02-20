@@ -44,7 +44,7 @@
 
             }
         },
-        mounted: function () {
+        beforeUpdate: function () {
             this.value = this.property.VALUE;
         }
     }

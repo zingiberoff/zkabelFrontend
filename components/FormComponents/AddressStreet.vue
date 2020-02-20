@@ -56,7 +56,7 @@
           STREET: v
         };
         this.loading = true;
-        axios.post('https://www.zkabel.ru/api/kladr/searchStreet/', data).then(
+        axios.post('https://www.zkabel.ru/api/kladrapi/searchStreet/', data).then(
           response => {
             if (response.status == '200' && response.data != "") {
               this.items = response.data.result.ITEMS;
@@ -67,7 +67,9 @@
 
 
     },
-    mounted: function () {
+      beforeMount: function () {
+          this.querySelections(this.property.VALUE);
+
       this.search = this.property.VALUE;
     },
     created() {

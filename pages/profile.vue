@@ -1,5 +1,5 @@
 <template>
-  <cabinet v-if="$store.state.userToken"/>
+    <cabinet v-if="$store.state.user.userToken"/>
   <auth v-else/>
 
 </template>

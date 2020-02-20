@@ -1,6 +1,6 @@
 <template>
 
-  <SaleOrder v-if="$store.state.userToken"/>
+    <SaleOrder v-if="isAuth"/>
   <auth v-else/>
 </template>
 
@@ -13,7 +13,7 @@
     components: {SaleOrder, Auth},
     computed: {
       isAuth() {
-        if (this.$store.state.userToken.length > 0) {
+          if (this.$store.state.user.userToken.length > 0) {
           return true;
         }
         return false;

@@ -1,9 +1,22 @@
 <template>
-  <div class="cart-counter">
+  <div class="cart-counter" v-if="active">
     <div class="minus" @click="minus()"></div>
-    <input @change="changeCount" :value="countInCart">
+    <input @change="changeCount" @input="" :value="count">
     <div class="plus" @click="plus()"></div>
   </div>
+  <v-btn
+    v-else
+    large
+    color='accent'
+    style="width: 130px"
+    :loading="true"
+    :disabled="true"
+  >
+
+    <span :slot="true" class="custom-loader">
+        <v-icon light>cached</v-icon>
+      </span>
+  </v-btn>
 </template>
 
 <script>
@@ -11,24 +24,39 @@
     name: "EditCartCount",
     props: {
       product_id: Number,
-      countInCart: Number,
-      step: Number
+      step: Number,
     },
     data: function () {
       return {
-        count: this.countInCart
+        active: true,
+
+        oldValue: 0,
       }
     }
     ,
-    watch: {
-      count: function (a, b) {
-        console.log(a - b);
-        this.$store.dispatch('addToCart', {id: this.product_id, count: a - b});
+    computed: {
+      count: {
+        get() {
+          this.oldValue = this.$store.getters.inCart[this.product_id];
+          return this.$store.getters.inCart[this.product_id]
+        },
+        set(val) {
+          console.log(val - this.oldValue);
+          this.active = false;
+          this.$store.dispatch('addToCart', {id: this.product_id, count: val - this.oldValue}).then(() => {
+            this.active = true;
+          }).catch(e => console.log(e));
+          this.oldValue = val
+        }
       }
-    }
-    ,
+    },
+    created() {
+      this.oldValue = this.$store.getters.inCart[this.product_id]
+    },
     methods: {
+
       plus: function (e) {
+
         this.count = this.count + this.step;
       }
       ,
@@ -49,10 +77,10 @@
         } else {
           count = 0;
         }
-        console.log(count);
         this.count = count;
       }
     },
+
   }
 </script>
 
@@ -64,7 +92,7 @@
     display: flex;
     width: 130px;
     border: 1px solid #d3d3d3;
-    padding:  6px;
+    padding: 6px;
     justify-content: space-between;
   }
 
@@ -102,6 +130,20 @@
     position: absolute;
     width: 2px;
     height: 16px;
+  }
+
+  .custom-loader {
+    animation: loader 1s infinite;
+    display: flex;
+  }
+
+  @keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
 
 </style>

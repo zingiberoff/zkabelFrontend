@@ -7,3 +7,13 @@ let options = {
   mode:  'debug'
 };
 Vue.use(YmapPlugin, options);
+
+Vue.prototype.reachGoal = function (goal) {
+
+    if (process.browser && process.env.NODE_ENV === 'production') {
+        console.log('goal: ' + goal)
+        window.yaCounter23160964.reachGoal(goal);
+    } else {
+        console.log('Dev no goal: ' + goal)
+    }
+}

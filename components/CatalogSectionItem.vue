@@ -6,7 +6,7 @@
         contain
         ></v-img>
 
-        <v-card-text class="subheading">{{name}}</v-card-text>
+        <v-card-text class="subheading" v-html="">{{name}}</v-card-text>
 
     </v-card>
     </a>

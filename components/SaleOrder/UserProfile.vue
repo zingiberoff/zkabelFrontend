@@ -31,7 +31,10 @@
     methods: {},
     created() {
       this.$store.dispatch('getProfiles', this.personType);
-    }
+    },
+      destroyed() {
+          this.$store.commit('setProfile', null)
+      }
   }
 </script>
 

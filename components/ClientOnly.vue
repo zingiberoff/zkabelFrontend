@@ -7,11 +7,19 @@
     name: "ClientOnly",
     computed: {},
     created() {
-      this.$store.commit('loading', true);
-      this.$store.dispatch('loadSession');
+
+        this.$store.dispatch('loadSession').then(() => {
+            this.$store.dispatch('loadDiscounts').then(() => {
+
+            }).catch(() => {
+            })
+        }).catch();
       this.$store.dispatch('loadCart').then(() => {
-        this.$store.commit('loading', false)
-      }).catch(e=>{console.log(e)});
+
+
+      }).catch(e => {
+        console.log(e)
+      });
     }
   }
 </script>

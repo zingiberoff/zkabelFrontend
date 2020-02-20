@@ -14,8 +14,9 @@
                      grid-list-lg>
           <v-layout row wrap>
             <props v-for="prop in group.PROPS"
-                   :key="'prop-'+prop.ID"
+                   :key="'prop-'+prop.ID+'_'+profileID"
                    :property="prop"
+                   :profile="profileID"
                    @change="updateProperty(prop,$event)"
             ></props>
 
@@ -33,7 +34,6 @@
 
   export default {
     name: "OrderProperties",
-    props: ['personType', 'profileID'],
     components: {Props},
     data: function () {
       return {};
@@ -41,7 +41,13 @@
     computed: {
       orderProperties() {
         return this.$store.state.orderProperties.orderProperties;
-      }
+      },
+        personType() {
+            return this.$store.state.order.userType;
+        },
+        profileID() {
+            return this.$store.state.order.userProfile;
+        }
     },
     methods: {
       updateProperty: function (prop, value) {

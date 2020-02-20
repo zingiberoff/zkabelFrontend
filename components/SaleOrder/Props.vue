@@ -6,14 +6,14 @@
         <component v-if="kladrComponent"
                    :is="kladrComponent"
                    :property="property"
-                   :key="property.ID"
+                   :key="'p-'+property.ID+'-'+profile"
                    v-on="$listeners"
                    @change="$emit('change')"
         ></component>
 
         <component v-else :is="'input-'+type"
                    :property="property"
-                   :key="property.ID"
+                   :key="'p-'+property.ID+'-'+profile"
                    v-on="$listeners"
                    @change="$emit('change')"
         ></component>
@@ -35,7 +35,7 @@
 
     export default {
         name: "Props",
-        props: ['property','location'],
+        props: ['property', 'location', 'profile'],
         components: {
             InputText,
             InputTextarea,
@@ -54,6 +54,7 @@
             };
         },
         computed: {
+
             kladrComponent: function () {
                 if (~this.kladrComponents.indexOf(this.property.CODE)) {
                     let arr = this.property.CODE.toLowerCase().split('_');

@@ -40,11 +40,11 @@
 
 <style scoped>
   .fade-enter-active, .fade-leave-active {
-    transition: opacity .5s cubic-bezier(0.6,-0.44, 0.53, 0.99);
-    transition-duration: .5s;
+    transition: opacity .3s cubic-bezier(0.6, -0.44, 0.53, 0.99);
+    /*transition-duration: .9s;*/
   }
 
-  .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */
+  .fade-enter, .fade-leave-to
   {
     opacity: 0;
   }

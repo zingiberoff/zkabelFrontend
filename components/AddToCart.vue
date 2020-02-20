@@ -27,10 +27,12 @@
     methods:
       {
         add() {
+
           this.loading = true;
           this.$store.dispatch('addToCart', {id: this.product_id, count: this.moq}).then(() => {
             this.loading = true
           }).catch((e)=>{ this.loading = true})
+            this.$emit('click');
         }
       },
       computed:{

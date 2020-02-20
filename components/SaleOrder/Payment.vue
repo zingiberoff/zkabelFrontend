@@ -44,11 +44,12 @@
     name: "Payment",
     data: function () {
       return {
-        items: [],
+          items: [],
         value: '',
       }
     },
     computed: {
+
       personType() {
         return this.$store.state.order.userType;
       },
@@ -92,7 +93,8 @@
       }
     },
     created() {
-
+        axios.defaults.headers['Authorization-Token'] = this.$store.state.user.userToken;
+        this.update()
     }
   }
 </script>

@@ -1,7 +1,7 @@
 <template>
     <select class="form-control"
-           id="'prop_'+property.ID"
-           value=""
+            id="'prop_'+property.ID" q
+            value=""
     >
         <option>123</option>
     </select>

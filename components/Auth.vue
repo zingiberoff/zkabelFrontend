@@ -27,7 +27,7 @@
             Войти
           </v-btn>
         </v-flex>
-        <nuxt-link to="/registration/">Регистрация</nuxt-link>
+          <nuxt-link to="/register/">Регистрация</nuxt-link>
       </v-layout>
     </v-container>
 
@@ -46,6 +46,7 @@
     },
     methods: {
       Login: function () {
+          console.log(1);
         this.$store.dispatch('auth', {login: this.login, pass: this.password});
 
       }

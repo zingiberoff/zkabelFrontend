@@ -1,14 +1,23 @@
 <template>
-  <thanks v-if="orderId">
+  <thanks v-if="orderId" :response="response">
   </thanks>
   <v-container grid-list-lg v-else-if="$store.getters.cartSumm">
     <v-form v-model="formValid">
-      <user-type/>
+        <user-type @changeUser="changeUser"/>
       <user-profile v-if="personType" :key="'profile_'+personType"/>
-      <order-properties v-if="profileID" :key="'properties_'+profileID"/>
-      <delivery v-if="personType" :key="'delivery_'+personType"/>
-      <payment v-if="personType" :key="'payments'+personType"/>
-      <v-btn color="success" v-if="formValid&&profileID&&delivery&&payment" @click="saveOrder">Оформить заказ</v-btn>
+        <order-properties :key="'properties_'+profileID" v-if="personType"/>
+        <delivery :key="'delivery_'+profileID" v-if="personType"/>
+        <payment :key="'payments'+profileID" v-if="personType"/>
+        <v-btn :disabled="!formValid||!delivery||!payment"
+               @click="saveOrder"
+
+               block
+               class="create_order"
+               color="success"
+               fixed
+        >
+            Оформить заказ
+        </v-btn>
     </v-form>
   </v-container>
 
@@ -36,8 +45,8 @@
       return {
         formValid: false,
         profileType: "",
-        orderId: null
-
+        orderId: null,
+        response: ''
       };
     },
     computed: {
@@ -58,12 +67,15 @@
       }
     },
     methods: {
+
       saveOrder() {
+          this.reachGoal('m-oformili-zakaz')
         let props = this.orderProperties;
         props.payment_id = this.payment;
         props.delivery_id = this.delivery;
-        this.$store.dispatch('saveOrder', props).then(orderId => {
-          this.orderId = orderId
+        this.$store.dispatch('saveOrder', props).then(result => {
+          this.orderId = result.ORDER.ID;
+          this.response = result;
         }).catch(e => {
           console.log(e)
         });
@@ -73,5 +85,19 @@
 </script>
 
 <style scoped>
+    .create_order {
+        width: 100%;
+        color: #000;
+        position: fixed;
+        bottom: 67px;
+        left: 0;
+    }
 
+    form {
+        margin-bottom: 80px;
+    }
+
+    .create_order.theme--light.v-btn.v-btn--disabled:not(.v-btn--icon):not(.v-btn--flat):not(.v-btn--outline) {
+        background-color: #f5f5f5 !important;
+    }
 </style>

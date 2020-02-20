@@ -11,24 +11,30 @@
             {{product.name}}
           </div>
         </nuxt-link>
-        <img :src="product.picture.src" alt="">
+          <v-img :src="product.picture.src" alt="" contain v-if="product.picture"/>
         <div class="article">
-          артикул: {{product.article}}
+          арт.: {{product.article}}
         </div>
 
-        <div v-if="price" class="item_price">
+        <div class="avability">
+
+          <div v-for="(store,index) in product.stores.STORES_SORTED_BY_CITY" :key="index">
+            <b>{{ store.NAME }}:</b> {{store.QUANTITY}}
+          </div>
+        </div>
+          <div class="item_price" v-if="parseFloat(price)">
           {{price}}
         </div>
-        <div v-if="price" class="item_buy">
+          <div class="item_buy" v-if="parseFloat(price)">
           <edit-cart-count v-if="inCart"
                            :product_id="product.id"
                            :count-in-cart="inCart"
-                           @update="refreshCart()" v-bind:step="product.ratio"
+                           v-bind:step="product.ratio"
           />
           <add-to-cart v-else
                        :product_id="product.id"
-                       @update="refreshCart()"
                        :moq="product.moq"
+                       @click="reachGoal('m-kupit-catalog')"
           />
         </div>
       </v-card>
@@ -49,12 +55,17 @@
     components: {EditCartCount, AddToCart},
     computed: {
       price() {
-        return this.$store.getters.prices[this.product.id]
+          return this.$store.getters.prices[this.product.id]
       },
       inCart() {
         return this.$store.getters.inCart[this.product.id];
       }
-    }
+    },
+      methods: {
+          click2add() {
+              console.log(1)
+          }
+      }
   }
 </script>
 
@@ -85,6 +96,11 @@
     grid-area: price;
     justify-self: right;
     font-size: 18px;
+  }
+
+  .avability {
+    grid-area: avability;
+    font-size: x-small;
   }
 
   .article {

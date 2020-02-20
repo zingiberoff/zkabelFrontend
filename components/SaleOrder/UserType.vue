@@ -36,6 +36,7 @@
     watch: {
       radios: function (val) {
         this.$store.commit('setUserType', val);
+          this.$emit('changeUser', this.id);
       }
     },
 

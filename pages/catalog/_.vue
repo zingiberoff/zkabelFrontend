@@ -1,4 +1,5 @@
 <template>
+
   <div class="katalog"
        row
        v-touch="{right: () => goUp()}">
@@ -17,10 +18,11 @@
 <script>
   import Category from '../../components/Category.vue'
   import Product from '../../components/Product.vue'
+  import Search from '../../components/Search.vue'
 
   export default {
     name: "catalog",
-    components: {Category, Product},
+    components: {Category, Product, Search},
     data: function () {
       return {
         entity: {}
@@ -80,40 +82,7 @@
 
 <style scoped>
   .katalog {
+    min-height: 100%;
     padding-bottom: 40px;
-  }
-
-  .sub_cat {
-    min-height: 100vh;
-    display: none;
-    position: fixed;
-    top: 0;
-    background: white;
-    width: 100%;
-  }
-
-  .list-item {
-    display: inline-block;
-    margin-right: 10px;
-  }
-
-  .list-enter-active, .list-leave-active {
-    transition: all .1s;
-  }
-
-  .list-enter-active {
-    transition-delay: .1s;
-  }
-
-  .list-enter /* .list-leave-active до версии 2.1.8 */
-  {
-    opacity: 0;
-    transform: scaleY(0);
-  }
-
-  .list-leave-to /* .list-leave-active до версии 2.1.8 */
-  {
-    opacity: 0;
-    transform: scaleY(0);
   }
 </style>

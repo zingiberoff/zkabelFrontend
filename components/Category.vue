@@ -1,9 +1,9 @@
 <template>
-
-    <v-flex xs12>
+    <v-layout justify-center row>
+        <v-flex sm8 xs12>
 
       <v-list subheader>
-        <v-subheader v-if="section">{{section.name}}</v-subheader>
+        <v-subheader v-if="section.name">{{section.name}}</v-subheader>
         <nuxt-link :to="item.url"
                    v-for="item in childSections"
                    :key="item.id"
@@ -11,10 +11,10 @@
           <v-list-tile>
 
             <v-list-tile-avatar>
-              <img :src="item.image">
+                <v-img :src="item.image" contain v-if="item.image"/>
             </v-list-tile-avatar>
             <v-list-tile-content>
-              <v-list-tile-title>{{ item.name }}</v-list-tile-title>
+                <v-list-tile-title v-html="item.name"></v-list-tile-title>
             </v-list-tile-content>
 
           </v-list-tile>
@@ -27,7 +27,7 @@
         :product="item">
       </catalog-item>
     </v-flex>
-
+    </v-layout>
 </template>
 
 <script>
